@@ -1,11 +1,10 @@
 package com.example.kaweel.sample.github
 
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.example.kaweel.sample.app.SchedulerProvider
 import javax.inject.Inject
 
 
-class GitHubPresenter @Inject constructor(private val gitHubApiInterface: GitHubModule.GitHubApiInterface) {
+class GitHubPresenter @Inject constructor(private val gitHubApiInterface: GitHubModule.GitHubApiInterface, private val schedulerProvider: SchedulerProvider) {
 
     private lateinit var view: View
 
@@ -28,8 +27,8 @@ class GitHubPresenter @Inject constructor(private val gitHubApiInterface: GitHub
     fun getUser(username: String) {
         view.onLoading()
         gitHubApiInterface.getUser(username)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(schedulerProvider.ioScheduler())
+                .observeOn(schedulerProvider.uiScheduler())
                 .subscribe({ data ->
                     view.displaySuccess(data)
                 }, { throwable ->

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.kaweel.sample.R
 import com.example.kaweel.sample.SampleApplication
+import com.example.kaweel.sample.app.AppSchedulerProvider
 import javax.inject.Inject
 
 

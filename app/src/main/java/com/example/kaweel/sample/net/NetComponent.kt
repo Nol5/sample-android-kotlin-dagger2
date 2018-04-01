@@ -4,6 +4,7 @@ import dagger.Component
 import javax.inject.Singleton
 import android.content.SharedPreferences
 import com.example.kaweel.sample.app.AppModule
+import com.example.kaweel.sample.app.SchedulerProvider
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
@@ -12,6 +13,7 @@ import retrofit2.Retrofit
 @Component(modules = [(NetModule::class), (AppModule::class)])
 interface NetComponent {
 
+    fun schedulerProvider(): SchedulerProvider
     fun retrofit(): Retrofit
     fun okHttpClient(): OkHttpClient
     fun sharedPreferences(): SharedPreferences

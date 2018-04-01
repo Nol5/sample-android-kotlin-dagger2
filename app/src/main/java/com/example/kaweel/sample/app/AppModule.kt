@@ -14,4 +14,10 @@ class AppModule(private var mApplication: Application) {
     fun providesApplication(): Application {
         return mApplication
     }
+
+    @Provides
+    @Singleton
+    fun provideSchedulerProvider() : SchedulerProvider {
+        return AppSchedulerProvider()
+    }
 }

@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
     private fun initial() {
         supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.contentBox, GitHubUserFragment.newInstance("Nol5"))
+                .replace(R.id.contentBox, GitHubUserFragment.newInstance())
                 .commit()
     }
 }

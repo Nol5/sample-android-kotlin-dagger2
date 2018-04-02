@@ -12,7 +12,7 @@ import com.example.kaweel.sample.net.DaggerNetComponent
 
 class SampleApplication : Application() {
 
-    private lateinit var mNetComponent: NetComponent
+    private lateinit var netComponent: NetComponent
     private lateinit var gitHubComponent: GitHubComponent
 
     fun getGitHubComponent(): GitHubComponent {
@@ -21,13 +21,13 @@ class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        mNetComponent = DaggerNetComponent.builder()
+        netComponent = DaggerNetComponent.builder()
                 .appModule(AppModule(this))
                 .netModule(NetModule("https://api.github.com/"))
                 .build()
 
         gitHubComponent = DaggerGitHubComponent.builder()
-                .netComponent(mNetComponent)
+                .netComponent(netComponent)
                 .gitHubModule(GitHubModule())
                 .build()
     }

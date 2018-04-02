@@ -1,14 +1,17 @@
 package com.example.kaweel.sample.github
 
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.kaweel.sample.R
 import com.example.kaweel.sample.SampleApplication
-import com.example.kaweel.sample.app.AppSchedulerProvider
+import com.example.kaweel.sample.util.Keyboards
+import kotlinx.android.synthetic.main.fragment_git_hub_user.*
 import javax.inject.Inject
 
 
@@ -17,15 +20,12 @@ class GitHubUserFragment : Fragment(), GitHubPresenter.View {
     @Inject
     lateinit var gitHubPresenter: GitHubPresenter
 
-    private lateinit var user: String
+    @Inject
+    lateinit var keyboards: Keyboards
 
     companion object {
         @JvmStatic
-        fun newInstance(user: String) = GitHubUserFragment().apply {
-            arguments = Bundle().apply {
-                putString("user", user)
-            }
-        }
+        fun newInstance() = GitHubUserFragment()
 //        @JvmStatic
 //        fun newInstance(user: String): GitHubUserFragment {
 //            val fragment = GitHubUserFragment()
@@ -43,12 +43,6 @@ class GitHubUserFragment : Fragment(), GitHubPresenter.View {
         (activity?.application as SampleApplication).getGitHubComponent().inject(this)
         gitHubPresenter.injectView(this)
 
-//        if(null != arguments){
-//            user = arguments!!.getString("user")
-//        }
-        arguments?.let {
-            user = it.getString("user")
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -59,22 +53,33 @@ class GitHubUserFragment : Fragment(), GitHubPresenter.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        gitHubPresenter.getUser(user)
+        loadButton.setOnClickListener {
+            if (userNameEditText.text.isNotEmpty()) {
+                userNameEditText.clearFocus()
+                keyboards.hideKeyboard(userNameEditText)
+                gitHubPresenter.getUser(userNameEditText.text.toString())
+            }
+
+        }
     }
 
     override fun onLoading() {
-        Log.v("GitHubPresenterViewImpl", "onLoading")
+        progressBar.visibility = View.VISIBLE
     }
 
     override fun onDismiss() {
-        Log.v("GitHubPresenterViewImpl", "onDismiss")
+        progressBar.visibility = View.GONE
     }
 
     override fun displaySuccess(gitHubUser: GitHubUser) {
-        Log.v("GitHubPresenterViewImpl", "displaySuccess ${gitHubUser.username}")
+        Glide.with(this).load(gitHubUser.avatarUrl).apply(RequestOptions()).into(profileImageView)
+        nameValTextView.text = gitHubUser.name
+        urlValTextView.text = gitHubUser.htmlUrl
+        blogValTextView.text = gitHubUser.blog
     }
 
     override fun displayError(message: String) {
-        Log.v("GitHubPresenterViewImpl", "displayError : $message")
+        Snackbar.make(nameValTextView, message, Snackbar.LENGTH_LONG).show()
     }
+
 }

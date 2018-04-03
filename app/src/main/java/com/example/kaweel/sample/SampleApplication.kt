@@ -3,11 +3,11 @@ package com.example.kaweel.sample
 import android.app.Application
 import com.example.kaweel.sample.app.AppModule
 import com.example.kaweel.sample.github.DaggerGitHubComponent
+import com.example.kaweel.sample.github.GitHubComponent
+import com.example.kaweel.sample.github.GitHubModule
+import com.example.kaweel.sample.net.DaggerNetComponent
 import com.example.kaweel.sample.net.NetComponent
 import com.example.kaweel.sample.net.NetModule
-import com.example.kaweel.sample.github.GitHubModule
-import com.example.kaweel.sample.github.GitHubComponent
-import com.example.kaweel.sample.net.DaggerNetComponent
 
 
 class SampleApplication : Application() {
@@ -21,9 +21,13 @@ class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        initialComponent("https://api.github.com/")
+    }
+
+    fun initialComponent(url: String) {
         netComponent = DaggerNetComponent.builder()
                 .appModule(AppModule(this))
-                .netModule(NetModule("https://api.github.com/"))
+                .netModule(NetModule(url))
                 .build()
 
         gitHubComponent = DaggerGitHubComponent.builder()

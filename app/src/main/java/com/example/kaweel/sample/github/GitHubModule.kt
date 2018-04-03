@@ -1,6 +1,6 @@
 package com.example.kaweel.sample.github
 
-import com.example.kaweel.sample.scope.UserScope
+import com.example.kaweel.sample.scope.GitHubScope
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Observable
@@ -17,7 +17,7 @@ class GitHubModule {
     }
 
     @Provides
-    @UserScope
+    @GitHubScope
     fun providesGitHubInterface(retrofit: Retrofit): GitHubApiInterface {
         return retrofit.create(GitHubApiInterface::class.java)
     }

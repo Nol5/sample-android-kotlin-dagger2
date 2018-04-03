@@ -3,6 +3,8 @@ package com.example.kaweel.sample.net
 import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import com.example.kaweel.sample.app.AppSchedulerProvider
+import com.example.kaweel.sample.app.SchedulerProvider
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -19,6 +21,12 @@ import javax.inject.Singleton
 
 @Module
 class NetModule(private var mBaseUrl: String) {
+
+    @Provides
+    @Singleton
+    fun provideSchedulerProvider(): SchedulerProvider {
+        return AppSchedulerProvider()
+    }
 
     @Provides
     @Singleton

@@ -15,15 +15,6 @@ class SampleApplication : Application() {
     private lateinit var netComponent: NetComponent
     private lateinit var gitHubComponent: GitHubComponent
 
-    fun getGitHubComponent(): GitHubComponent {
-        return gitHubComponent
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        initialComponent("https://api.github.com/")
-    }
-
     fun initialComponent(url: String) {
         netComponent = DaggerNetComponent.builder()
                 .appModule(AppModule(this))
@@ -34,6 +25,16 @@ class SampleApplication : Application() {
                 .netComponent(netComponent)
                 .gitHubModule(GitHubModule())
                 .build()
+    }
+
+    fun getGitHubComponent(): GitHubComponent {
+        return gitHubComponent
+    }
+
+
+    override fun onCreate() {
+        super.onCreate()
+        initialComponent("https://api.github.com/")
     }
 
 
